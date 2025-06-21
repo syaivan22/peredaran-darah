@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game Edukasi: Rute Peredaran Darah</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f8e9;
+      text-align: center;
+      padding: 2em;
+    }
+    h1 {
+      color: #33691e;
+    }
+    .stage {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 1em auto;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .choices button {
+      margin: 0.5em;
+      padding: 0.8em 1.2em;
+      background-color: #7cb342;
+      border: none;
+      color: white;
+      font-size: 1em;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .choices button:hover {
+      background-color: #558b2f;
+    }
+    #feedback {
+      margin-top: 1em;
+      font-size: 1.1em;
+      color: #33691e;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rute Peredaran Darah</h1>
+  <div class="stage" id="stage-box">
+    <p id="stage-text"></p>
+    <div class="choices" id="choices"></div>
+    <div id="feedback"></div>
+  </div>
+
+  <script>
+    const stages = [
+      {
+        text: "Darah dari seluruh tubuh kembali ke jantung. Masuk ke bagian...?",
+        choices: ["Atrium kiri", "Atrium kanan", "Ventrikel kiri"],
+        answer: 1,
+        explanation: "Darah dari tubuh masuk ke atrium kanan melalui vena cava."
+      },
+      {
+        text: "Dari atrium kanan, darah mengalir ke...?",
+        choices: ["Ventrikel kanan", "Paru-paru", "Atrium kiri"],
+        answer: 0,
+        explanation: "Darah mengalir ke ventrikel kanan sebelum menuju paru-paru."
+      },
+      {
+        text: "Dari ventrikel kanan, darah dipompa ke...?",
+        choices: ["Paru-paru", "Atrium kiri", "Aorta"],
+        answer: 0,
+        explanation: "Darah dipompa ke paru-paru melalui arteri pulmonalis untuk pertukaran gas."
+      },
+      {
+        text: "Setelah dari paru-paru, darah kaya oksigen kembali ke jantung melalui...?",
+        choices: ["Vena cava", "Aorta", "Atrium kiri"],
+        answer: 2,
+        explanation: "Darah dari paru-paru masuk ke atrium kiri melalui vena pulmonalis."
+      },
+      {
+        text: "Dari atrium kiri, darah mengalir ke...?",
+        choices: ["Ventrikel kiri", "Atrium kanan", "Ventrikel kanan"],
+        answer: 0,
+        explanation: "Darah mengalir ke ventrikel kiri sebelum dipompa ke seluruh tubuh."
+      },
+      {
+        text: "Dari ventrikel kiri, darah dipompa keluar melalui...?",
+        choices: ["Paru-paru", "Aorta", "Vena cava"],
+        answer: 1,
+        explanation: "Darah dipompa melalui aorta ke seluruh tubuh."
+      }
+    ];
+
+    let currentStage = 0;
+    const stageText = document.getElementById("stage-text");
+    const choicesBox = document.getElementById("choices");
+    const feedbackBox = document.getElementById("feedback");
+
+    function showStage() {
+      feedbackBox.textContent = "";
+      const s = stages[currentStage];
+      stageText.textContent = s.text;
+      choicesBox.innerHTML = "";
+      s.choices.forEach((choice, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = choice;
+        btn.onclick = () => checkChoice(i);
+        choicesBox.appendChild(btn);
+      });
+    }
+
+    function checkChoice(i) {
+      const correct = stages[currentStage].answer;
+      if (i === correct) {
+        feedbackBox.textContent = "✅ Benar! " + stages[currentStage].explanation;
+        setTimeout(() => {
+          currentStage++;
+          if (currentStage < stages.length) {
+            showStage();
+          } else {
+            stageText.textContent = "Selamat! Kamu telah menuntaskan alur peredaran darah dengan benar.";
+            choicesBox.innerHTML = "";
+          }
+        }, 2000);
+      } else {
+        feedbackBox.textContent = "❌ Salah. Coba lagi.";
+      }
+    }
+
+    showStage();
+  </script>
+</body>
+</html>
